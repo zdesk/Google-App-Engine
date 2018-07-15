@@ -1,5 +1,7 @@
 package com.jdriven.stateless.security;
 
+import java.io.IOException;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,7 +26,7 @@ public class TokenAuthenticationService {
 		tokenHandler = new TokenHandler(DatatypeConverter.parseBase64Binary(secret));
 	}
 
-	public void addAuthentication(HttpServletResponse response, UserAuthentication authentication) throws JSONException {
+	public void addAuthentication(HttpServletResponse response, UserAuthentication authentication) throws JSONException, IOException {
 		final User user = authentication.getDetails();
 		user.setExpires(System.currentTimeMillis() + TEN_DAYS);
 		final String token = tokenHandler.createTokenForUser(user);
@@ -33,6 +35,7 @@ public class TokenAuthenticationService {
 		// headers of redirects / full page reloads.
 		// (Its reloaded as a result of this response triggering a redirect back to "/")
 		response.addCookie(createCookieForToken(token));
+		response.sendRedirect("http://localhost:4200");
 	}
 
 	public UserAuthentication getAuthentication(HttpServletRequest request) {

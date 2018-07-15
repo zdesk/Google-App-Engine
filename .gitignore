@@ -10,3 +10,11 @@ buildNumber.properties
 
 # Avoid ignoring Maven wrapper jar file (.jar files are usually ignored)
 !/.mvn/wrapper/maven-wrapper.jar
+
+boot-stateless-social/\.idea/
+
+*.iml
+
+boot-stateless-social/src/main/webapp/
+
+boot-stateless-social/\.settings/

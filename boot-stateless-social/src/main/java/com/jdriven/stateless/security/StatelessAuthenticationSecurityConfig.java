@@ -18,7 +18,7 @@ import org.springframework.social.security.SpringSocialConfigurer;
 
 @EnableWebSecurity
 @Configuration
-@Order(1)
+@Order(3)
 public class StatelessAuthenticationSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
@@ -60,15 +60,17 @@ public class StatelessAuthenticationSecurityConfig extends WebSecurityConfigurer
 
 				//allow anonymous calls to social login
 				.antMatchers("/auth/**").permitAll()
+				
+				.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
 				//allow anonymous GETs to API
-				.antMatchers(HttpMethod.GET, "/api/**").permitAll()
+				//.antMatchers(HttpMethod.GET, "/api/**").permitAll()
 
 				//defined Admin only API area
 				.antMatchers("/admin/**").hasRole("ADMIN")
 
 				//all other request need to be authenticated
-				.antMatchers(HttpMethod.GET, "/api/users/current/details").hasRole("USER")
+				.antMatchers(HttpMethod.GET, "/api/users/**").hasRole("USER")
 				.anyRequest().hasRole("USER").and()
 
 				// add custom authentication filter for complete stateless JWT based authentication
